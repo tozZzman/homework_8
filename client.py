@@ -13,5 +13,3 @@ with socket.socket() as s:
         if message == 'stop':
             break
         print(f'Send {msg_bytes} bytes')
-
-

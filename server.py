@@ -9,8 +9,6 @@ config.read('config.ini')
 address = (config.get('host', 'ip'), int(config.get('host', 'port')))
 
 
-
-
 def message_parser(message):
     response = defaultdict(
         lambda: {"Request Method": "GET", "Request Source": None, "Response Status": "200 OK", "header-name": None}
@@ -42,6 +40,7 @@ def message_parser(message):
 
     return response
 
+
 with socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0, fileno=None) as s:
     s.bind(address)
     s.listen(10)
@@ -55,5 +54,3 @@ with socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0, file
         if data == b'stop':
             break
         print(resp)
-
-
