@@ -8,15 +8,7 @@ config = configparser.RawConfigParser()
 config.read('config.ini')
 address = (config.get('host', 'ip'), int(config.get('host', 'port')))
 
-my_socket = socket.socket(family=socket.AF_INET,
-                          type=socket.SOCK_STREAM,
-                          proto=0,
-                          fileno=None)
-my_socket.bind(address)
-my_socket.listen(10)
-print('=======Server started=======')
-conn, addr = my_socket.accept()
-print(conn, addr)
+
 
 
 def message_parser(message):
@@ -50,12 +42,18 @@ def message_parser(message):
 
     return response
 
+with socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0, fileno=None) as s:
+    s.bind(address)
+    s.listen(10)
+    print('=======Server started=======')
+    conn, addr = s.accept()
+    print(conn, addr)
 
-while True:
-    data = conn.recv(1024)
-    resp = message_parser(data.decode('UTF-8'))
-    if data == b'stop':
-        break
-    print(resp)
+    while True:
+        data = conn.recv(1024)
+        resp = message_parser(data.decode('UTF-8'))
+        if data == b'stop':
+            break
+        print(resp)
 
-my_socket.close()
+
